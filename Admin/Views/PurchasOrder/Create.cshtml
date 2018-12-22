@@ -1,0 +1,586 @@
+﻿@model Admin.Models.PurchasOrderModel
+@using Admin.Helpers;
+@{
+    //Get Roles
+    List<Admin.Models.RoleUser>
+    UserRoles = ViewBag.UserRoles;
+
+    MenuItem mi = new MenuItem();
+    if (Model.PurchasOrder.PurchasOrderId == Guid.Empty)
+    {
+        ViewData["Title"] = "Purchase Orders - Create";
+        mi.Name = "Purchase Orders Create";
+    }
+    else
+    {
+        ViewData["Title"] = "Purchase Orders - Edit";
+        mi.Name = "Purchase Orders Edit";
+    }
+    ViewData["Active"] = "Purchase Orders";
+    mi.URL = "Create";
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu>
+        mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Purchase_Orders).FirstOrDefault() != null)
+{
+    using (Html.BeginForm("Create", "PurchasOrder", FormMethod.Post, new { @class = "form-horizontal form-seperated form-row-stripped" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-body">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.PurchasOrder.Name, htmlAttributes: new { @class = "col-md-3 control-label" })
+                <div class="col-md-4">
+                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() != null)
+                    {
+                        @Html.DisplayFor(model => model.PurchasOrder.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    else
+                    {
+                        @Html.EditorFor(model => model.PurchasOrder.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    @Html.ValidationMessageFor(model => model.PurchasOrder.Name, "", new { @class = "text-danger" })
+                    <div class="text-danger">@ViewBag.Error</div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PurchasOrder.Description, htmlAttributes: new { @class = "col-md-3 control-label" })
+                <div class="col-md-4">
+                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() != null)
+                    {
+                        @Html.DisplayFor(model => model.PurchasOrder.Description, new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.TextAreaFor(model => model.PurchasOrder.Description, new { @class = "form-control" })
+                    }
+                    @Html.ValidationMessageFor(model => model.PurchasOrder.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() == null)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PurchasOrder.Supplier, htmlAttributes: new { @class = "col-md-3 control-label" })
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.PurchasOrder.SupplierId, new SelectList(Model.PurchasOrder.Supplier, "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PurchasOrder.SupplierId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+        </div>
+        @Html.HiddenFor(model => model.PurchasOrder.PurchasOrderId)
+        <div class="panel-body pan">
+            <div class="portlet box">
+                <div class="portlet-body">
+                    <div class="row mbm">
+                        <div class="col-lg-12">
+                            <div style="width: auto; height: auto; max-height:500px; overflow: scroll;">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="vertical-align:bottom;">Product Name</th>
+                                                @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() == null)
+                                                {
+                                                    <th class="numeric" style="vertical-align:bottom;">Customer</th>
+                                                    <th class="numeric" style="vertical-align:bottom;">Order Price</th>
+                                                    <th class="numeric" style="vertical-align:bottom;">Order Qty</th>
+                                                    <th style="vertical-align:bottom;">History</th>
+                                                }
+                                                <th class="numeric" style="vertical-align:bottom;">Purchase Order Price</th>
+                                                <th class="numeric" style="vertical-align:bottom;">Purchase Order Qty</th>
+                                                <th style="vertical-align:bottom;">Purchase Order Remarks</th>
+                                                <th style="vertical-align:bottom;">Delivery</th>
+                                                @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() == null)
+                                                {
+                                                    <th>Status</th>
+                                                }
+                                            </tr>
+                                        <tbody>
+                                            @foreach (var item in Model.PurchasOrderDetails)
+                                            {
+                                                <tr>
+                                                    <td style="vertical-align:bottom;">
+                                                        &nbsp;
+                                                        @Html.DisplayFor(modelItem => item.myProduct)
+                                                    </td>
+                                                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() == null)
+                                                    {
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @Html.DisplayFor(modelItem => item.CustomerName)
+                                                        </td>
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @Html.DisplayFor(modelItem => item.OrderPrice)
+                                                        </td>
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @Html.DisplayFor(modelItem => item.OrderQty)
+                                                        </td>
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @Html.DisplayFor(modelItem => item.PurchaseOrderHistory)
+                                                        </td>
+                                                    }
+                                                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_CFO).FirstOrDefault() != null)
+                                                    {
+                                                        <td class="numeric" style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @if (Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Initialized)
+                                                            {
+                                                                @Html.EditorFor(modelItem => item.PurchaseOrderPrice, new { htmlAttributes = new { style = "width:100px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DisplayFor(modelItem => item.PurchaseOrderPrice)
+                                                            }
+                                                        </td>
+
+                                                        <td class="numeric" style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @if (Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Initialized)
+                                                            {
+                                                                @Html.EditorFor(modelItem => item.PurchaseOrderQty, new { htmlAttributes = new { style = "width:100px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DisplayFor(modelItem => item.PurchaseOrderQty)
+                                                            }
+                                                        </td>
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @if (Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Initialized)
+                                                            {
+                                                                @Html.EditorFor(modelItem => item.PurchaseOrderRemark, new { htmlAttributes = new { style = "width:150px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DisplayFor(modelItem => item.PurchaseOrderRemark)
+                                                            }
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+
+
+                                                        <td class="numeric" style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @if (Model.PurchasOrder.myStatus == Utilities.Status_Active || Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Rejected)
+                                                            {
+                                                                @Html.EditorFor(modelItem => item.PurchaseOrderPrice, new { htmlAttributes = new { style = "width:100px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DisplayFor(modelItem => item.PurchaseOrderPrice)
+                                                            }
+                                                        </td>
+
+                                                        <td class="numeric" style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @if (Model.PurchasOrder.myStatus == Utilities.Status_Active || Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Rejected)
+                                                            {
+                                                                @Html.EditorFor(modelItem => item.PurchaseOrderQty, new { htmlAttributes = new { style = "width:100px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DisplayFor(modelItem => item.PurchaseOrderQty)
+                                                            }
+                                                        </td>
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @if (Model.PurchasOrder.myStatus == Utilities.Status_Active || Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Rejected)
+                                                            {
+                                                                @Html.EditorFor(modelItem => item.PurchaseOrderRemark, new { htmlAttributes = new { style = "width:150px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DisplayFor(modelItem => item.PurchaseOrderRemark)
+                                                            }
+                                                        </td>
+                                                    }
+                                                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() == null)
+                                                    {
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                           @Html.DisplayFor(modelItem => item.ReceiveDate)
+                                                        </td>
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            <span class="label label-sm label-success">@Html.DisplayFor(modelItem => item.myStatus)</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @Html.EditorFor(modelItem => item.ReceiveDate)
+                                                        </td>
+                                                    }
+                                                    @Html.HiddenFor(modelItem => item.PurchasOrderDetailId)
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.PurchasOrder.PurchasOrderId)
+        <div class="form-actions text-right pal">
+            @if (Model.PurchasOrder.PurchasOrderId == Guid.Empty)
+            {
+                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Operations).FirstOrDefault() != null)
+                {
+                    <input type="submit" value="Add Product" name="action" class="btn btn-blue" />
+                    <input type="submit" value="Create Purchase Order" name="action" class="btn btn-primary" />
+                }
+            }
+            else
+            {
+                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() != null)
+                {
+                    if (Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Approved)
+                    {
+                        <input type="submit" value="Accepted" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Deny" name="action" class="btn btn-red" />
+                    }
+                }
+                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_CFO).FirstOrDefault() != null)
+                {
+                    if (Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Initialized)
+                    {
+                        <input type="submit" value="Approved" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Rejected" name="action" class="btn btn-red" />
+                    }
+                }
+                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Operations).FirstOrDefault() != null)
+                {
+                    if (Model.PurchasOrder.myStatus == Utilities.Purchase_Order_Supplier_Accepted)
+                    {
+                        <input type="submit" value="PO Delivered" name="action" class="btn btn-green" />
+                    }
+
+                    if (Model.PurchasOrder.myStatus == Utilities.Status_Active || Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Rejected)
+                    {
+                        <input type="submit" value="Add Product" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Submit" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Edit" name="action" class="btn btn-primary" />
+                        <input type="submit" value="Delete" name="action" onclick="return confirm('Are you sure to delete this record ?')" class="btn btn-danger" />
+
+                    }
+                }
+            }
+            @Html.ActionLink("Back to List", "Index", "PurchasOrder", null, new { @class = "btn btn-green" })
+        </div>
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+
+
+
+
+
+
+
+
+@*@model Admin.Models.PurchasOrderModel
+@using Admin.Helpers;
+@{
+    //Get Roles
+    List<Admin.Models.RoleUser>
+    UserRoles = ViewBag.UserRoles;
+
+    MenuItem mi = new MenuItem();
+    if (Model.PurchasOrder.PurchasOrderId == Guid.Empty)
+    {
+        ViewData["Title"] = "Purchase Orders - Create";
+        mi.Name = "Purchase Orders Create";
+    }
+    else
+    {
+        ViewData["Title"] = "Purchase Orders - Edit";
+        mi.Name = "Purchase Orders Edit";
+    }
+    ViewData["Active"] = "Purchase Orders";
+    mi.URL = "Create";
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu>
+        mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Purchase_Orders).FirstOrDefault() != null)
+{
+    using (Html.BeginForm("Create", "PurchasOrder", FormMethod.Post, new { @class = "form-horizontal form-seperated form-row-stripped" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-body">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.PurchasOrder.Name, htmlAttributes: new { @class = "col-md-3 control-label" })
+                <div class="col-md-4">
+                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() != null)
+                    {
+                        @Html.DisplayFor(model => model.PurchasOrder.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    else
+                    {
+                        @Html.EditorFor(model => model.PurchasOrder.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    @Html.ValidationMessageFor(model => model.PurchasOrder.Name, "", new { @class = "text-danger" })
+                    <div class="text-danger">@ViewBag.Error</div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PurchasOrder.Description, htmlAttributes: new { @class = "col-md-3 control-label" })
+                <div class="col-md-4">
+                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() != null)
+                    {
+                        @Html.DisplayFor(model => model.PurchasOrder.Description, new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.TextAreaFor(model => model.PurchasOrder.Description, new { @class = "form-control" })
+                    }
+                    @Html.ValidationMessageFor(model => model.PurchasOrder.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PurchasOrder.ExpectDeliveryDate, htmlAttributes: new { @class = "col-md-3 control-label" })
+                <div class="col-md-4">
+                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() != null)
+                    {
+                        @Html.DisplayFor(model => model.PurchasOrder.ExpectDeliveryDate, new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.EditorFor(model => model.PurchasOrder.ExpectDeliveryDate, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    @Html.ValidationMessageFor(model => model.PurchasOrder.ExpectDeliveryDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() == null)
+            {
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PurchasOrder.Supplier, htmlAttributes: new { @class = "col-md-3 control-label" })
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.PurchasOrder.SupplierId , new SelectList(Model.PurchasOrder.Supplier, "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PurchasOrder.SupplierId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+        </div>
+        @Html.HiddenFor(model => model.PurchasOrder.PurchasOrderId)
+        <div class="panel-body pan">
+            <div class="portlet box">
+                <div class="portlet-body">
+                    <div class="row mbm">
+                        <div class="col-lg-12">
+                            <div style="width: auto; height: auto; max-height:500px; overflow: scroll;">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="vertical-align:bottom;">Product Name</th>
+                                                @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() == null)
+                                                {
+                                                    <th class="numeric" style="vertical-align:bottom;">Customer</th>
+                                                    <th class="numeric" style="vertical-align:bottom;">Offer Price</th>
+                                                    <th class="numeric" style="vertical-align:bottom;">Offer Qty</th>
+                                                    <th style="vertical-align:bottom;">History</th>
+                                                }
+                                                <th class="numeric" style="vertical-align:bottom;">Purchase Order Price</th>
+                                                <th class="numeric" style="vertical-align:bottom;">Purchase Order Qty</th>
+                                                <th style="vertical-align:bottom;">Purchase Order Remarks</th>
+                                                @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() == null)
+                                                {
+                                                    <th>Status</th>
+                                                }
+                                            </tr>
+                                        <tbody>
+                                            @foreach (var item in Model.PurchasOrderDetails)
+                                            {
+                                                <tr>
+                                                    <td style="vertical-align:bottom;">
+                                                        &nbsp;
+                                                        @Html.DisplayFor(modelItem => item.myProduct)
+                                                    </td>
+                                                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() == null)
+                                                    {
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @Html.DisplayFor(modelItem => item.CustomerName)
+                                                        </td>
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @Html.DisplayFor(modelItem => item.OfferPrice)
+                                                        </td>
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @Html.DisplayFor(modelItem => item.OfferQty)
+                                                        </td>
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @Html.DisplayFor(modelItem => item.History)
+                                                        </td>
+                                                    }
+                                                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_CFO).FirstOrDefault() != null)
+                                                    {
+                                                        <td class="numeric" style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @if (Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Initialized)
+                                                            {
+                                                                @Html.EditorFor(modelItem => item.OrderPrice, new { htmlAttributes = new { style = "width:100px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DisplayFor(modelItem => item.OrderPrice)
+                                                            }
+                                                        </td>
+
+                                                        <td class="numeric" style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @if (Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Initialized)
+                                                            {
+                                                                @Html.EditorFor(modelItem => item.OrderQty, new { htmlAttributes = new { style = "width:100px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DisplayFor(modelItem => item.OrderQty)
+                                                            }
+                                                        </td>
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            @if (Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Initialized)
+                                                            {
+                                                                @Html.EditorFor(modelItem => item.Remark, new { htmlAttributes = new { style = "width:150px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DisplayFor(modelItem => item.Remark)
+                                                            }
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+
+
+                                                    <td class="numeric" style="vertical-align:bottom;">
+                                                        &nbsp;
+                                                        @if (Model.PurchasOrder.myStatus == Utilities.Status_Active || Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Rejected)
+                                                        {
+                                                            @Html.EditorFor(modelItem => item.OrderPrice, new { htmlAttributes = new { style = "width:100px;" } })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DisplayFor(modelItem => item.OrderPrice)
+                                                        }
+                                                    </td>
+
+                                                    <td class="numeric" style="vertical-align:bottom;">
+                                                        &nbsp;
+                                                        @if (Model.PurchasOrder.myStatus == Utilities.Status_Active || Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Rejected)
+                                                        {
+                                                            @Html.EditorFor(modelItem => item.OrderQty, new { htmlAttributes = new { style = "width:100px;" } })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DisplayFor(modelItem => item.OrderQty)
+                                                        }
+                                                    </td>
+                                                    <td style="vertical-align:bottom;">
+                                                        &nbsp;
+                                                        @if (Model.PurchasOrder.myStatus == Utilities.Status_Active || Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Rejected)
+                                                        {
+                                                            @Html.EditorFor(modelItem => item.Remark, new { htmlAttributes = new { style = "width:150px;" } })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DisplayFor(modelItem => item.Remark)
+                                                        }
+                                                    </td>
+                                                    }
+                                                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Supplier).FirstOrDefault() == null)
+                                                    {
+                                                        <td style="vertical-align:bottom;">
+                                                            &nbsp;
+                                                            <span class="label label-sm label-success">@Html.DisplayFor(modelItem => item.myStatus)</span>
+                                                        </td>
+                                                    }
+                                                    @Html.HiddenFor(modelItem => item.PurchasOrderDetailId)
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.PurchasOrder.PurchasOrderId)
+        <div class="form-actions text-right pal">
+            @if (Model.PurchasOrder.PurchasOrderId == Guid.Empty)
+            {
+                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Sales_Representative).FirstOrDefault() != null)
+                {
+                    <input type="submit" value="Add Product" name="action" class="btn btn-blue" />
+                    <input type="submit" value="Create Purchase Order" name="action" class="btn btn-primary" />
+                }
+            }
+            else
+            {
+                
+                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_CFO).FirstOrDefault() != null)
+                {
+
+                    if (Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Initialized)
+                    {
+                        <input type="submit" value="Approved" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Rejected" name="action" class="btn btn-red" />
+                    }
+                   
+                }
+                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Sales_Representative).FirstOrDefault() != null)
+                {
+                    if (Model.PurchasOrder.myStatus == Utilities.Status_Active || Model.PurchasOrder.myStatus == Utilities.Purchas_Order_Rejected)
+                    {
+                        <input type="submit" value="Add Product" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Submit" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Edit" name="action" class="btn btn-primary" />
+                        <input type="submit" value="Delete" name="action" onclick="return confirm('Are you sure to delete this record ?')" class="btn btn-danger" />
+
+                    }
+                }
+            }
+            @Html.ActionLink("Back to List", "Index", "PurchasOrder", null, new { @class = "btn btn-green" })
+        </div>
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@
+
+
+

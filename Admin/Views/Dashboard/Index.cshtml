@@ -1,0 +1,157 @@
+﻿@using Admin.Helpers;
+@model Admin.Models.Dashboard 
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["Active"] = "Dashboard";
+    Account a = new Account();
+    List<Admin.Models.Menu> mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+        @if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Dashboard).FirstOrDefault() != null)
+        {
+            <div id="tab-general">
+                <div id="sum_box" class="row mbl">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="panel db mbm">
+                            <div class="panel-body">
+                                <p class="icon"><i class="icon fa fa-group"></i></p><h4 class="value">
+                                    <span>@Model.Customers</span>
+                                </h4>
+                                <p class="description">Customers</p>
+                                <div class="progress progress-sm mbn">
+                                    <div role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                         style="width: 100%;" class="progress-bar progress-bar-success">
+                                        <span class="sr-only">100% Complete (success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="panel db mbm">
+                            <div class="panel-body">
+                                <p class="icon"><i class="icon fa fa-truck"></i></p><h4 class="value">
+                                    <span>@Model.Suppliers</span>
+                                </h4>
+                                <p class="description">Suppliers</p>
+                                <div class="progress progress-sm mbn">
+                                    <div role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                         style="width: 100%;" class="progress-bar progress-bar-info">
+                                        <span class="sr-only">100% Complete (success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="panel db mbm">
+                            <div class="panel-body">
+                                <p class="icon"><i class="icon fa fa-archive"></i></p><h4 class="value">
+                                    <span>@Model.Products</span>
+                                </h4>
+                                <p class="description">Products</p>
+                                <div class="progress progress-sm mbn">
+                                    <div role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                         style="width: 100%;" class="progress-bar progress-bar-danger">
+                                        <span class="sr-only">100% Complete (success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+                <div id="sum_box" class="row mbl">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="panel db mbm">
+                            <div class="panel-body">
+                                <p class="icon"><i class="fa fa-location-arrow"></i></p><h4 class="value">
+                                    <span>@Model.Offers</span>
+                                </h4>
+                                <p class="description">Offers</p>
+                                <div class="progress progress-sm mbn">
+                                    <div role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                         style="width: 100%;" class="progress-bar progress-bar-blue">
+                                        <span class="sr-only">100% Complete (success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="panel db mbm">
+                            <div class="panel-body">
+                                <p class="icon"><i class="icon fa fa-suitcase"></i></p><h4 class="value">
+                                    <span>@Model.Orders</span>
+                                </h4>
+                                <p class="description">Orders</p>
+                                <div class="progress progress-sm mbn">
+                                    <div role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                         style="width: 100%;" class="progress-bar progress-bar-orange">
+                                        <span class="sr-only">100% Complete (success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="panel db mbm">
+                            <div class="panel-body">
+                                <p class="icon"><i class="icon fa fa-shopping-cart"></i></p><h4 class="value">
+                                    <span>@Model.PruchaseOrders</span>
+                                </h4>
+                                <p class="description">Pruchase Orders</p>
+                                <div class="progress progress-sm mbn">
+                                    <div role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                         style="width: 100%;" class="progress-bar progress-bar-violet">
+                                        <span class="sr-only">100% Complete (success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mbl">
+                    <div class="col-lg-12">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 class="mbm text-uppercase">Application Status</h4><span class="task-item">
+                                            Offer<small class="pull-right text-muted">@Model.OfferPersentage</small><div class="progress progress-sm">
+                                                <div role="progressbar" aria-valuenow="@Model.OfferCompleted"
+                                                     aria-valuemin="0" aria-valuemax="@Model.Offers"
+                                                     style="width: @Model.OfferPersentage;"
+                                                     class="progress-bar progress-bar-orange">
+                                                    <span class="sr-only">@Model.OfferPersentage Complete (success)</span>
+                                                </div>
+                                            </div>
+                                        </span><span>
+                                            Pruchase Orders<small class="pull-right text-muted">@Model.POPersentage</small><div class="progress progress-sm">
+                                                <div role="progressbar" aria-valuenow="@Model.POCompleted"
+                                                     aria-valuemin="0" aria-valuemax="@Model.PruchaseOrders"
+                                                     style="width: @Model.POPersentage;"
+                                                     class="progress-bar progress-bar-blue">
+                                                    <span class="sr-only">@Model.POPersentage Complete (success)</span>
+                                                </div>
+                                            </div>
+                                        </span><span>
+                                            Order<small class="pull-right text-muted">@Model.OrderPersentage</small><div class="progress progress-sm">
+                                                <div role="progressbar" aria-valuenow="@Model.OrderCompleted"
+                                                     aria-valuemin="0" aria-valuemax="@Model.Orders"
+                                                     style="width: @Model.OrderPersentage;"
+                                                     class="progress-bar progress-bar-green">
+                                                    <span class="sr-only">@Model.OrderPersentage Complete (success)</span>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @section Scripts {
+            @{Html.RenderPartial("_DashboardScripts");}
+        }

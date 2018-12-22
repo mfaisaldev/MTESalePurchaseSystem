@@ -1,0 +1,77 @@
+﻿@using Admin.Helpers;
+@model Admin.Models.Currency
+
+@{
+    if (Model.CurrencyId== Guid.Empty)
+    {
+        ViewData["Title"] = "Currency - Create";
+    }
+    else
+    {
+        ViewData["Title"] = "Currency - Edit";
+    }
+    ViewData["Active"] = "Currency";
+    MenuItem mi = new MenuItem();
+    mi.URL = "Currency";
+    mi.Name = ViewData["Title"].ToString();
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuList.Clear();
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu> mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Currency).FirstOrDefault() != null)
+{
+    using (Html.BeginForm("Create", "Currencies", FormMethod.Post, new { @class = "form-horizontal form-seperated form-row-stripped" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-body">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-3 control-label" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    <div class="text-danger">@ViewBag.Error</div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Symbol, htmlAttributes: new { @class = "col-md-3 control-label" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Symbol, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Symbol, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.DisplayOrder, htmlAttributes: new { @class = "col-md-3 control-label" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.CurrencyId)
+        <div class="form-actions text-right pal">
+            @if (Model.CurrencyId== Guid.Empty)
+            {
+                <input type="submit" value="Create Currency" name="action" class="btn btn-primary" />
+            }
+            else
+            {
+                <input type="submit" value="Edit Currency" name="action" class="btn btn-primary" />
+                @:
+                <input type="submit" value="Delete Currency" name="action" onclick="return confirm('Are you sure to delete this record ?')" class="btn btn-danger" />
+
+            }
+            @Html.ActionLink("Back to List", "Index", "Currencies", null, new { @class = "btn btn-green" })
+
+        </div>
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

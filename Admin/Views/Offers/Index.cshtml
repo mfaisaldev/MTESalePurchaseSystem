@@ -1,0 +1,135 @@
+﻿@using Admin.Helpers;
+@model IEnumerable<Admin.Models.Offer>
+
+@{
+    //Get Roles
+    List<Admin.Models.RoleUser> UserRoles = ViewBag.UserRoles;
+
+    ViewData["Title"] = "Offers - List";
+    ViewData["Active"] = "Offers";
+
+    MenuItem mi = new MenuItem();
+    mi.URL = "Index";
+    mi.Name = "Offers - List";
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuList.Clear();
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu> mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Offers).FirstOrDefault() != null)
+{
+    <div class="panel-body pan">
+        <div class="portlet box">
+            @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Sales_Representative).FirstOrDefault() != null)
+            {
+                <div class="portlet-header">
+                    <a href="Create">
+                        <button type="button" class="btn btn-info">
+                            Create New
+                        </button>
+                    </a>
+                </div>
+            }
+            <div class="portlet-body">
+                <div class="row mbm">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table id="table_id"
+                                   class="table table-hover table-striped table-bordered table-advanced tablesorter display">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">@Html.DisplayNameFor(model => model.OfferDate)</th>
+                                        @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                        {
+                                            <th width="20%">@Html.DisplayNameFor(model => model.Customer)</th>
+                                        }
+                                        <th width="20%">@Html.DisplayNameFor(model => model.Name)</th>
+                                        @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                        {
+                                            <th width="15%">@Html.DisplayNameFor(model => model.OfferAcceptanceDate)</th>
+                                            <th width="15%">@Html.DisplayNameFor(model => model.OfferApprovalDate)</th>
+                                        }
+                                        <th width="10%">@Html.DisplayNameFor(model => model.Status)</th>
+                                        <th width="10%">Actions</th>
+                                    </tr>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.OfferDate)
+                                            </td>
+                                            @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                            {
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.myCustomer)
+                                                </td>
+                                            }
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                            {
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.OfferAcceptanceDate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.OfferApprovalDate)
+                                                </td>
+                                            }
+                                            <td>
+                                                @if (item.StatusId.ToString() == Utilities.Status_Initially_Approved || item.StatusId.ToString() == Utilities.Status_Finally_Approved)
+                                                {
+                                                    if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                                    { 
+                                                    <span class="label label-sm label-success">@Html.DisplayFor(modelItem => item.myStatus)</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (item.StatusId.ToString() == Utilities.Status_Initially_Approved)
+                                                        {
+                                                          <span class="label label-sm label-blue">New Offer</span>
+                                                        }
+                                                        else
+                                                        {
+                                                          <span class="label label-sm label-success">@Html.DisplayFor(modelItem => item.myStatus)</span>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-sm label-danger">@Html.DisplayFor(modelItem => item.myStatus)</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("Create", new { Id = item.OfferId})">
+                                                    <button type="button" class="btn btn-default btn-xs">
+                                                        <i class="fa fa-edit"></i>&nbsp;
+                                                        @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                                        {
+                                                            @: Edit
+                                                        }
+                                                        else
+                                                        {
+                                                            @:Details
+                                                        }
+                                                    </button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @{Html.RenderPartial("_TableScripts");}
+}

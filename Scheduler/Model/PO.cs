@@ -1,0 +1,121 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Scheduler.Model
+{
+    class PO
+    {
+        public const string ARRAY_ORDERS = "Orders";
+        public const string SupplierOrderNo = "SupplierOrderNo";
+        public const string SupplierName = "SupplierName";
+        public const string SupplierOrderDate = "SupplierOrderDate";
+        public const string DeliveryDate = "DeliveryDate";
+        public const string TotalAmount = "TotalAmount";
+        public const string OurRef = "OurRef";
+        public const string ContactNo = "ContactNo";
+        public const string NameContactNo = "NameContactNo";
+        public const string SupplierNo = "SupplierNo";
+        public const string TermsOfPaySupplNo = "TermsOfPaySupplNo";
+        public const string WareHouseNo = "WareHouseNo";
+        public const string ProductNo = "ProductNo";
+        public const string DepNo = "DepNo";
+        public const string ProjectNo = "ProjectNo";
+        public const string VATCode = "VATCode";
+        public const string TaxClassNo = "TaxClassNo";
+        public const string CurrencyNo = "CurrencyNo";
+        public const string Telephone = "Telephone";
+        public const string DeliveredYesNo = "DeliveredYesNo";
+        public const string Address1 = "Address1";
+        public const string PostOffice = "PostOffice";
+        public const string PostCode = "PostCode";
+        public const string CountryNo = "CountryNo";
+        public const string EmployeeNo = "EmployeeNo";
+        public const string DeliveryMethodsNo = "DeliveryMethodsNo";
+        public const string TermsOfDeliveryNo = "TermsOfDeliveryNo";
+        public const string TotalDelivery = "TotalDelivery";
+        public const string InvoiceFee = "InvoiceFee";
+        public const string HandlingCharge = "HandlingCharge";
+        public const string Postage = "Postage";
+        public const string PurchaseDiscount = "PurchaseDiscount";
+        public const string PurchaseDiscountTaxFree = "PurchaseDiscountTaxFree";
+        public const string PostageTaxFree = "PostageTaxFree";
+        public const string CashDiscount = "CashDiscount";
+        public const string CashDiscountTaxFree = "CashDiscountTaxFree";
+        public const string DueDate = "DueDate";
+        public const string ExchangeAmount = "ExchangeAmount";
+        public const string ExchangeRate = "ExchangeRate";
+        public const string CompanyNo = "CompanyNo";
+        public const string TotalVAT = "TotalVAT";
+        public const string VoucherDate = "VoucherDate";
+        public const string DeliveryAddressNo = "DeliveryAddressNo";
+        public const string DeliveryCountryNo = "DeliveryCountryNo";
+        public const string DeliveryPostOffice = "DeliveryPostOffice";
+        public const string DeliveryAddress1 = "DeliveryAddress1";
+        public const string DeliveryPostCode = "DeliveryPostCode";
+        public const string DeliveryAddress2 = "DeliveryAddress2";
+        public const string Address2 = "Address2";
+        public const string OrderConfirmationDate = "OrderConfirmationDate";
+        public const string SuppliersOrderNoRef = "SuppliersOrderNoRef";
+        public const string TotalAmountFromInvoice = "TotalAmountFromInvoice";
+        public const string OrderStatus = "OrderStatus";
+        public const string RemainderOrderYesNo = "RemainderOrderYesNo";
+        public const string FreightCost = "FreightCost";
+        public const string OrderType = "OrderType";
+    }
+
+    class Lines
+    {
+        public const string ARRAY_LINES = "Lines";
+        public const string AltArtNo = "AltArtNo";
+        public const string Amount = "Amount";
+        public const string ArticleNo = "ArticleNo";
+        public const string CurrencyNo = "CurrencyNo";
+        public const string DeliveryDate = "DeliveryDate";
+        public const string DepNo = "DepNo";
+        public const string Description = "Description";
+        public const string DiscountGrpArtNo = "DiscountGrpArtNo";
+        public const string DiscountI = "DiscountI";
+        public const string EANNo = "EANNo";
+        public const string EmployeeNo = "EmployeeNo";
+        public const string ExchangeAmount = "ExchangeAmount";
+        public const string ExchangePurchasePrice = "ExchangePurchasePrice";
+        public const string ExchangeRate = "ExchangeRate";
+        public const string ExpiryDate = "ExpiryDate";
+        public const string FullCost = "FullCost";
+        public const string Invoiced = "Invoiced";
+        public const string InvoicePrice = "InvoicePrice";
+        public const string Name = "Name";
+        public const string NetDeliveryAmount = "NetDeliveryAmount";
+        public const string NetRemainderAmount = "NetRemainderAmount";
+        public const string OrderDate = "OrderDate";
+        public const string OrderStatus = "OrderStatus";
+        public const string OrderType = "OrderType";
+        public const string OriginalLineNo = "OriginalLineNo";
+        public const string OriginalPrice = "OriginalPrice";
+        public const string OriginalQuantity = "OriginalQuantity";
+        public const string PartReceived = "PartReceived";
+        public const string PostingTemplateNo = "PostingTemplateNo";
+        public const string PriceCalculationNo = "PriceCalculationNo";
+        public const string ProductNo = "ProductNo";
+        public const string ProjectNo = "ProjectNo";
+        public const string Quantity = "Quantity";
+        public const string Remainder = "Remainder";
+        public const string StockProfileNo = "StockProfileNo";
+        public const string SupplierNo = "SupplierNo";
+        public const string SupplierOrderNo = "SupplierOrderNo";
+        public const string TaxClassNo = "TaxClassNo";
+        public const string VATCode = "VATCode";
+        public const string WareHouseNo = "WareHouseNo";
+        public const string Weight = "Weight";
+        public const string SuppliersOrderLineNo = "SuppliersOrderLineNo";
+        public const string TotalInvoiced = "TotalInvoiced";
+        public const string UniqueId = "UniqueId";
+        public const string UnitHeight = "UnitHeight";
+        public const string UnitWidth = "UnitWidth";
+        public const string UnitLength = "UnitLength";
+        public const string UnitTypeNo = "UnitTypeNo";
+    }
+}

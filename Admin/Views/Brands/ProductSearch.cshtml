@@ -1,0 +1,162 @@
+﻿@using Admin.Helpers;
+@model Admin.Models.ProductSearch
+@{
+    string BrandName = "";
+    if (Request.QueryString["BrandName"] != null)
+    {
+        BrandName = Request.QueryString["BrandName"];
+        Model.CategoryName = BrandName;
+    }
+    else
+    {
+        BrandName = Model.BrandName;
+    }
+
+
+    ViewData["Title"] = "Add Products to " + BrandName + "  (Brand)";
+    ViewData["Active"] = "Brand";
+    MenuItem mi = new MenuItem();
+    mi.URL = "Index";
+    mi.Name = ViewData["Title"].ToString();
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu> mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Brand).FirstOrDefault() != null)
+{
+    using (Html.BeginForm("ProductSearch", "Brands", FormMethod.Get))
+    {
+        <div class="form-body pal">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-icon right">
+                            <i class="fa fa-archive"></i>@Html.EditorFor(m => m.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UPC_code, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-icon right">
+                            <i class="fa fa-archive"></i>@Html.EditorFor(m => m.UPC_code, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-icon right">
+                            <i class="fa fa-tags"></i>
+                            @Html.DropDownListFor(m => m.Category, new SelectList(ViewBag.Category, "CategoryId", "Name"), new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Supplier, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-icon right">
+                            <i class="fa fa-truck"></i>
+                            @Html.DropDownListFor(m => m.Supplier, new SelectList(ViewBag.Supplier, "SupplierId", "Name"), new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions text-right pal">
+                    <input type="submit" value="Search" name="action" class="btn btn-blue" />
+                    @Html.ActionLink("Back to List", "Index", "Brands", null, new { @class = "btn btn-green" })
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.BrandName)
+        <input type="hidden" name="Search" id="Search" value="true" />
+    }
+    using (Html.BeginForm("ProductAdd", "Brands", FormMethod.Post, new { @class = "form-horizontal form-seperated form-row-stripped" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="panel-body pan">
+            <div class="portlet box">
+                <div class="portlet-body">
+                    <div class="row mbm">
+                        <div class="col-lg-12">
+                            <div style="width: auto; height: auto; max-height:500px; overflow: scroll;">
+                                <div class="table-responsive">
+                                    <table id="table_id"
+                                           class="table table-hover table-striped table-bordered table-advanced tablesorter display">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 3%; padding: 10px; background: #efefef">
+                                                    <input type="checkbox" class="checkall" />
+                                                </th>
+                                                <th>Product Name</th>
+                                                <th>UPC Code</th>
+                                                <th width="10%">Status</th>
+                                            </tr>
+                                        <tbody>
+                                            @foreach (var item in Model.Products)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.CheckBoxFor(modelItem => item.IsAllow)
+                                                    @Html.HiddenFor(modelItem => item.ProductId)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.UPC_code)
+                                                </td>
+                                                <td>
+                                                    @if (item.StatusId.ToString() == Utilities.Status_Active)
+                                                    {
+                                                        <span class="label label-sm label-success">@Html.DisplayFor(modelItem => item.myStatus)</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="label label-sm label-danger">@Html.DisplayFor(modelItem => item.myStatus)</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            @if (Model.count > 0)
+                            {
+                                if (Model.page > 1)
+                                {
+                                    <input type="submit" value="Back" name="action" class="btn btn-orange" />
+                                }
+                                @:
+                                    if (Model.count == 500)
+                                {
+                                    <input type="submit" value="Next" name="action" class="btn btn-orange" />
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions text-right pal">
+                    @if (Model.Search)
+                    {
+                        <input type="submit" value="Add Products" name="action" class="btn btn-primary" />
+                    }
+                        @Html.ActionLink("Back to List", "Index", "Brands", null, new { @class = "btn btn-green" })
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" value="@Url.RequestContext.RouteData.Values["id"]" name="Brand" />
+            <input type="hidden" value="@Model.count" name="count" />
+            <input type="hidden" value="@Model.page" name="page" />
+                    }
+                    }
+                    @section Scripts {
+                        @Scripts.Render("~/bundles/jqueryval")
+                    }
+
+

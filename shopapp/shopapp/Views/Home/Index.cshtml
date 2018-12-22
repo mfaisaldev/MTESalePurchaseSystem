@@ -1,0 +1,302 @@
+﻿@model shopapp.Models.HomePageViewModel
+@{ 
+
+}
+
+<div role="main" class="main" >
+    
+    <!-- Begin Main Slide -->
+    <section class="main-slide">
+        <div class="container">
+            <div id="owl-second-demo" class="owl-carousel main-demo second-demo">
+                <div class="item">
+                    <img src="~/images/content/slides/home-slider1.jpg" class="img-responsive" alt="Photo">
+                    <div class="item-caption">
+                        <div class="item-caption-inner">
+                            <div class="item-caption-wrap">
+                                <p class="item-cat"><a href="~/Products">Look Forward to Summer</a></p>
+                                <h2>Shop with us <br>on selected brands</h2>
+                                <a href="~/Products" class="btn btn-white hidden-xs">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="~/images/content/slides/home-slider2.jpg" class="img-responsive" alt="Photo">
+                    <div class="item-caption">
+                        <div class="item-caption-inner">
+                            <div class="item-caption-wrap">
+                                <p class="item-cat"><a href="~/Products">Top Brands of Norway</a></p>
+                                <h2>25% off<br> on Sales this season</h2>
+                                <a href="~/Products" class="btn btn-white hidden-xs">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="~/images/content/slides/home-slider3.jpg" class="img-responsive" alt="Photo">
+                    <div class="item-caption">
+                        <div class="item-caption-inner">
+                            <div class="item-caption-wrap">
+                                <p class="item-cat"><a href="~/Products">Panties</a></p>
+                                <h2>Norway Best <br>brands</h2>
+                                <a href="~/Products" class="btn btn-white hidden-xs">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Main Slide -->
+    <!-- Begin Ads -->
+    <section class="collections">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-4 collect-item animation">
+                    <a href="~/Products" class="collect-item-thumb"><img src="~/images/content/products/collect-1.jpg" class="img-responsive" alt="Ad"></a>
+                    <h2>T-shirts for all your summer</h2>
+                    <p>Elementum vel augue eu, congue accumsan nulla. Curabitur blandit lectus nunc, ac egestas quam facilisis sit amet.</p>
+                    <a href="~/Products" class="btn">Read More</a>
+                </div>
+                <div class="col-xs-4 collect-item animation">
+                    <a href="~/Products" class="collect-item-thumb"><img src="~/images/content/products/collect-2.jpg" class="img-responsive" alt="Ad"></a>
+                    <h2>Womens wear collections</h2>
+                    <p>Vestibulum metus diam, elementum vel augue eu, congue accumsan nulla. Curabitur blandit lectus nunc, ac egestas quam facilisis.</p>
+                    <a href="~/Products" class="btn">Read More</a>
+                </div>
+                <div class="col-xs-4 collect-item animation">
+                    <a href="~/Products" class="collect-item-thumb"><img src="~/images/content/products/collect-3.jpg" class="img-responsive" alt="Ad"></a>
+                    <h2>Accesories LookBook 2014</h2>
+                    <p>Curabitur blandit lectus nunc, ac egestas quam facilisis sit amet. Vestibulum metus diam, elementum vel congue accumsan nulla. </p>
+                    <a href="~/Products" class="btn">Read More</a>
+                </div>
+            </div>
+           
+        </div>
+    </section>
+    <!-- End Ads -->
+    <!-- Begin Lookbook Women -->
+    <section id="lookbook">
+        <div class="container">
+            <div id="bg-red" class="lookbook">
+                <h2>Free Shipping in Norway</h2>
+                <p>Etiam aliquam risus ante, quis ultrices enim porta a. Integer et dolor sit amet enim feugiat faucibus. Donec sit amet egestas orci. Proin facilisis mi ornare turpis sollicitudin; vel rutrum est viverra. Vestibulum hendrerit egestas semper.</p>
+            </div>
+        </div>
+    </section>
+    <!-- End Lookbook Women -->
+    <!-- Begin Top Selling -->
+
+    <!-- ng-repeat="p in ProductList | limitTo:6"-->
+    <section class="products-slide">
+        <div class="container">
+            <h2 class="title"><span>Latest Products</span></h2>
+            <div class="row"  >
+                <div id="owl-product-slide" class="owl-carousel product-slide" >                                                      
+                    @foreach(var product in Model.TopProducts)
+                    {
+                    <div class="col-md-12 animation">
+                        <div class="item product">
+                            <div class="product-thumb-info">
+                                <div class="product-thumb-info-image">
+                                    <span class="product-thumb-info-act">
+                                        @Html.ActionLink(" ", "Details", "Products", new { @id = product.Id }, new { @class = "fa fa-external-link" })                                        
+                                        @*<a href="shop-cart-full.html" class="add-to-cart-product">
+                                            <span><i class="fa fa-shopping-cart"></i></span>
+                                        </a>*@
+                                    </span>
+                                    @*@Html.Raw(product.TheImage)*@
+                                    <img alt="" class="img-responsive" src="/home/RetriveImage/@product.ImgId">
+                                </div>
+                                <div class="product-thumb-info-content">
+                                    @*<span class="price pull-right">@product.Price </span>*@
+                                    <h4><a href="shop-product-detail2.html">@product.Name</a></h4>
+                                    <span class="item-cat"><small>@product.Category</small></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    }
+             
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Top Selling -->
+    <!-- Begin Parallax -->
+    <section class="pi-parallax parallax-shop" data-stellar-background-ratio="0.6">
+        <div class="container">
+            <div id="owl-text-slide" class="owl-carousel">
+                <div class="item">
+                    <div class="intro">
+                        <h2>Men’s Fashion and Style</h2>
+                        <span class="divider"></span>
+                        <p>Whatever you’re looking for, be it the latest fashion trends, cool outfit ideas or new ways to wear your favourite pieces, we’ve got all the style inspiration you need.</p>
+                        <a href="~/Products" class="btn btn-white hidden-xs">Shop Now</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="intro">
+                        <h2>Men’s Fashion and Style 2</h2>
+                        <span class="divider"></span>
+                        <p>Whatever you’re looking for, be it the latest fashion trends, cool outfit ideas or new ways to wear your favourite pieces, we’ve got all the style inspiration you need.</p>
+                        <a href="~/Products" class="btn btn-white hidden-xs">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Parallax -->
+    <!-- Begin List Thumbs -->
+    <section class="list-thumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 featured animation">
+                    <h3>Featured</h3>
+                    <div class="row">
+                        <div id="owl-featured-slide" class="owl-carousel product-slide product-thumbs-slide">                          
+                              <div class="col-md-12">
+                                <div class="item">
+                                    <ul class="list-unstyled list-thumbs-pro">
+                                      
+                                    @foreach (var featured in Model.Featured)
+                                        {
+                                        <li class="product">
+                                            <div class="product-thumb-info">
+                                                <div class="product-thumb-info-image">
+                                                    @Html.ActionLink(" ", "details", "products", new { @id = featured.Id }, null)
+                                                    <a href="@Url.Action("Details","products",new { @id = featured.Id })">
+                                                        <img alt='' width='60' src='/home/RetriveImage/@featured.ImgId'>
+                                                    </a>
+                                                </div>
+
+                                                <div class="product-thumb-info-content">
+                                                    <h4>@Html.ActionLink(@featured.Name, "details", "products", new { @id = featured.Id }, null)</h4>                                                    
+                                                    <span class="item-cat"><small>@featured.Category</small></span>
+                                                    @*<span class="price">@featured.Price</span>*@
+                                                </div>
+                                            </div>
+                                        </li>
+                                        }
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                          
+                            @*<div class="col-md-12">
+                                <div class="item">
+                                    <ul class="list-unstyled list-thumbs-pro">
+                                        <li class="product">
+                                            <div class="product-thumb-info">
+                                                <div class="product-thumb-info-image">
+                                                    <a href="shop-product-detail1.html"><img alt="" width="60" src="~/images/content/products/product-24.jpg"></a>
+                                                </div>
+
+                                                <div class="product-thumb-info-content">
+                                                    <h4><a href="shop-product-detail2.html">Chain necklace</a></h4>
+                                                    <span class="item-cat"><small><a href="#">Accessories</a></small></span>
+                                                    <span class="price">29.99 USD</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="product">
+                                            <div class="product-thumb-info">
+                                                <div class="product-thumb-info-image">
+                                                    <a href="shop-product-detail1.html"><img alt="" width="60" src="~/images/content/products/product-23.jpg"></a>
+                                                </div>
+
+                                                <div class="product-thumb-info-content">
+                                                    <h4><a href="shop-product-detail2.html">Double chain necklace</a></h4>
+                                                    <span class="item-cat"><small><a href="#">Accessories</a></small></span>
+                                                    <span class="price">29.99 USD</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="product">
+                                            <div class="product-thumb-info">
+                                                <div class="product-thumb-info-image">
+                                                    <a href="shop-product-detail1.html"><img alt="" width="60" src="~/images/content/products/product-22.jpg"></a>
+                                                </div>
+
+                                                <div class="product-thumb-info-content">
+                                                    <h4><a href="shop-product-detail2.html">Zigzag pattern cap</a></h4>
+                                                    <span class="item-cat"><small><a href="#">Caps and Hats</a></small></span>
+                                                    <span class="price">29.99 USD</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 bestseller animation">
+                    <h3>Bestseller</h3>
+                    <ul class="list-unstyled list-thumbs-pro">
+                        @foreach (var product in Model.BestSeller)
+                        {
+                            <li class="product">
+                                <div class="product-thumb-info">
+                                    <div class="product-thumb-info-image">
+                                        @Html.ActionLink(" ", "details", "products", new { @id = product.Id }, null)
+                                        <a href="@Url.Action("Details","products",new { @id = product.Id })">
+                                            <img alt='' width='60' src='/home/RetriveImage/@product.ImgId'>
+                                        </a>
+                                    </div>
+
+                                    <div class="product-thumb-info-content">
+                                        <h4>@Html.ActionLink(@product.Name, "details", "products", new { @id = product.Id }, null)</h4>
+                                        <span class="item-cat"><small>@product.Category</small></span>
+                                        @*<span class="price">@product.Price</span>*@
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        
+                       
+                    </ul>
+                </div>
+                <div class="col-sm-4 trends animation">
+                    <h3>Trends</h3>
+                    <ul class="list-unstyled list-thumbs-pro">
+                        @foreach (var product in Model.Trends)
+                        {
+                            <li class="product">
+                                <div class="product-thumb-info">
+                                    <div class="product-thumb-info-image">
+                                        @Html.ActionLink(" ", "details", "products", new { @id = product.Id }, null)
+                                        <a href="@Url.Action("Details","products",new { @id = product.Id })">
+                                            <img alt='' width='60' src='/home/RetriveImage/@product.ImgId'>
+                                        </a>
+                                    </div>
+
+                                    <div class="product-thumb-info-content">
+                                        <h4>@Html.ActionLink(@product.Name, "details", "products", new { @id = product.Id }, null)</h4>
+                                        <span class="item-cat"><small>@product.Category</small></span>
+                                        @*<span class="price">@product.Price</span>*@
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        
+                    </ul>
+                </div>
+            </div>
+            <ul class="list-inline wp-ads animation">
+                <li><i class="fa fa-plane"></i><strong>Delivery Area</strong><span>See all conditions</span></li>
+                <li><i class="fa fa-refresh"></i><strong>Return Policy</strong><span>For a smooth shopping</span></li>
+                <li><i class="fa fa-phone"></i><strong>0123 456 789</strong><span>Contact Customer</span></li>
+                <li><i class="fa fa-lock"></i><strong>Top Brands</strong><span>Best brands shopping</span></li>
+                <li><i class="fa fa-question-circle"></i><strong>Shopping Guide</strong><span>Contact Customer</span></li>
+            </ul>
+        </div>
+    </section>
+    <!-- End List Thumbs -->
+
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/angular.js"></script>
+<script src="~/Scripts/products/productApp.js"></script>

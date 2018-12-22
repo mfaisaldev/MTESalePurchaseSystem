@@ -1,0 +1,210 @@
+﻿@using Admin.Helpers;
+@model IEnumerable<Admin.Models.ProductCustomerView>
+@{
+    ViewData["Title"] = "Product - List";
+    ViewData["Active"] = "Product";
+    MenuItem mi = new MenuItem();
+    mi.URL = "Index";
+    mi.Name = ViewData["Title"].ToString();
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuList.Clear();
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu> mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+    //Get Roles
+    List<Admin.Models.RoleUser> UserRoles = ViewBag.UserRoles;
+
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Product).FirstOrDefault() != null && (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() != null))
+{
+    <div class="page-content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div id="grid-layout-ul-li" class="box jplist">
+                            <div class="jplist-ios-button"><i class="fa fa-sort"></i>jPList Actions</div>
+                            <div class="jplist-panel box panel-top">
+                                <button type="button" data-control-type="reset" data-control-name="reset"
+                                        data-control-action="reset" class="jplist-reset-btn btn btn-default">
+                                    Reset<i class="fa fa-share mls"></i>
+                                </button>
+                                <select data-control-type="select" data-control-name="paging"
+                                        data-control-action="paging" class="jplist-select form-control">
+                                    <option data-number="5"> 5 per page</option>
+                                    <option data-number="10" data-default="true"> 10 per page</option>
+                                    <option data-number="all"> view all</option>
+                                </select><select data-control-type="select" data-control-name="sort"
+                                                 data-control-action="sort" class="jplist-select form-control">
+                                    <option data-path="default">Sort by</option>
+                                    <option data-path=".title" data-order="asc" data-type="text">Title A-Z</option>
+                                    <option data-path=".title" data-order="desc" data-type="text">Title Z-A</option>
+                                    <option data-path=".desc" data-order="asc" data-type="text">
+                                        Description A-Z
+                                    </option>
+                                    <option data-path=".desc" data-order="desc" data-type="text">
+                                        Description Z-A
+                                    </option>
+                                    <option data-path=".like" data-order="asc" data-type="number">Likes asc</option>
+                                    <option data-path=".like" data-order="desc" data-type="number">
+                                        Likes desc
+                                    </option>
+                                    <option data-path=".date" data-order="asc" data-type="datetime">
+                                        Date asc
+                                    </option>
+                                    <option data-path=".date" data-order="desc" data-type="datetime">
+                                        Date desc
+                                    </option>
+                                </select><select data-control-type="select" data-control-name="category-filter"
+                                                 data-control-action="filter" class="jplist-select form-control">
+                                    <option data-path="default">Main Group</option>
+                                             @foreach (var item in ViewBag.MainGroup)
+                                             {
+                                                <option data-path=".@item.MainGroupId.ToString()">@item.Name</option>
+                                             }
+                                </select><select data-control-type="select" data-control-name="group-filter"
+                                                 data-control-action="filter" class="jplist-select form-control">
+                                    <option data-path="default">Intermediate Group</option>
+                                             @foreach (var item in ViewBag.IntermediateGroup)
+                                             {
+                                                 <option data-path=".@item.IntermediateGroupId.ToString()">@item.Name</option>
+                                             }
+                                </select>
+                                <div class="text-filter-box">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-search"></i>
+                                        </span><input data-path=".title"
+                                                      type="text" value=""
+                                                      placeholder="Filter by Title"
+                                                      data-control-type="textbox"
+                                                      data-control-name="title-filter"
+                                                      data-control-action="filter"
+                                                      class="form-control" />
+                                    </div>
+                                </div>
+                                <div data-control-type="views" data-control-name="views"
+                                     data-control-action="views" data-default="jplist-grid-view"
+                                     class="jplist-views">
+                                    <button type="button" data-type="jplist-list-view"
+                                            class="jplist-view jplist-list-view btn btn-default">
+                                        <i class="fa fa-th-list"></i>
+                                    </button>
+                                    <button type="button" data-type="jplist-grid-view"
+                                            class="jplist-view jplist-grid-view btn btn-default">
+                                        <i class="fa fa-th"></i>
+                                    </button>
+                                    <button type="button" data-type="jplist-thumbs-view"
+                                            class="jplist-view jplist-thumbs-view btn btn-default">
+                                        <i class="fa fa-reorder"></i>
+                                    </button>
+                                </div>
+                                <div data-type="Page {current} of {pages}" data-control-type="pagination-info"
+                                     data-control-name="paging" data-control-action="paging"
+                                     class="jplist-label btn btn-default"></div>
+                                <div data-control-type="pagination" data-control-name="paging"
+                                     data-control-action="paging" class="jplist-pagination"></div>
+                            </div>
+                            <ul class="box text-shadow ul-li-list">
+                                @foreach (var item in Model)
+                                {
+                                    <li class="list-item">
+                                        <a href="@Url.Action("CustomerDetail","Products", new { Id = item.ProductId })">
+
+                                            <div class="list-box">
+                                                <!--<img/>-->
+                                                <div class="img">
+                                                    @if (item.FileId != null)
+                                                    {
+                                                        <img src="~/File/Index/@item.FileId"  alt="Image" title="@item.Name" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/Images/download.jpg" style="max-height:249px;" alt="Image" title="@item.Name" />
+                                                    }
+
+                                                </div><!--<data></data>-->
+
+                                                <div class="block">
+                                                    <p class="date">@item.PublishDate </p>
+                                                    <p class="title">@item.Name</p>
+                                                    <p class="desc">
+                                                        @item.ShortDescription
+                                                    </p>
+                                                    <p class="theme">
+                                                        <span class="@item.MainGroupId">@item.MainGroupName</span><br />
+                                                        <span class="@item.IntermediateGroupId">@item.IntermediateGroupName</span>
+                                                    </p>
+                                                    <p class="price">@item.CurrencySymbol@item.Price</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                            <div class="jplist-ios-button"><i class="fa fa-sort"></i>jPList Actions</div>
+                            <div class="jplist-panel box panel-bottom">
+                                <div data-control-type="drop-down" data-control-name="paging"
+                                     data-control-action="paging" data-control-animate-to-top="true"
+                                     class="jplist-drop-down form-control">
+                                    <ul class="dropdown-menu">
+                                        <li><span data-number="5"> 5 per page</span></li>
+                                        <li><span data-number="10" data-default="true"> 10 per page</span></li>
+                                        <li><span data-number="all"> view all</span></li>
+                                    </ul>
+                                </div>
+                                <div data-control-type="drop-down" data-control-name="sort"
+                                     data-control-action="sort" data-control-animate-to-top="true"
+                                     data-datetime-format="{month}/{day}/{year}"
+                                     class="jplist-drop-down form-control">
+                                    <ul class="dropdown-menu">
+                                        <li><span data-path="default">Sort by</span></li>
+                                        <li>
+                                            <span data-path=".title" data-order="asc"
+                                                  data-type="text">Title A-Z</span>
+                                        </li>
+                                        <li>
+                                            <span data-path=".title" data-order="desc" data-type="text">Title Z-A</span>
+                                        </li>
+                                        <li>
+                                            <span data-path=".desc" data-order="asc" data-type="text">Description A-Z</span>
+                                        </li>
+                                        <li>
+                                            <span data-path=".desc" data-order="desc" data-type="text">Description Z-A</span>
+                                        </li>
+                                        <li>
+                                            <span data-path=".like" data-order="asc" data-type="number"
+                                                  data-default="true">Likes asc</span>
+                                        </li>
+                                        <li>
+                                            <span data-path=".like" data-order="desc" data-type="number">Likes desc</span>
+                                        </li>
+                                        <li>
+                                            <span data-path=".date" data-order="asc" data-type="datetime">Date asc</span>
+                                        </li>
+                                        <li>
+                                            <span data-path=".date" data-order="desc" data-type="datetime">Date desc</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div data-type="{start} - {end} of {all}" data-control-type="pagination-info"
+                                     data-control-name="paging" data-control-action="paging"
+                                     class="jplist-label btn btn-default"></div>
+                                <div data-control-type="pagination" data-control-name="paging"
+                                     data-control-action="paging" data-control-animate-to-top="true"
+                                     class="jplist-pagination"></div>
+                            </div>
+                            <div class="box jplist-no-results text-shadow align-center">
+                                <p>No results found</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @{Html.RenderPartial("_UiLiScript");}
+}

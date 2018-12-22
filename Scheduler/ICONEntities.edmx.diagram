@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ab60378931394ed3a6a0e33365f19ae7" Name="Diagram1">
+        <EntityTypeShape EntityType="ICONEntities.AspNetUser" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ICONEntities.tblBrand" Width="1.5" PointX="5.25" PointY="45.875" />
+        <EntityTypeShape EntityType="ICONEntities.tblCategory" Width="1.5" PointX="18.75" PointY="67.875" />
+        <EntityTypeShape EntityType="ICONEntities.tblCountry" Width="1.5" PointX="5.25" PointY="58.875" />
+        <EntityTypeShape EntityType="ICONEntities.tblCurrency" Width="1.5" PointX="13.5" PointY="65.5" />
+        <EntityTypeShape EntityType="ICONEntities.tblCustomer" Width="1.5" PointX="13.5" PointY="56.25" />
+        <EntityTypeShape EntityType="ICONEntities.tblCustomerShipping" Width="1.5" PointX="18.75" PointY="46.625" />
+        <EntityTypeShape EntityType="ICONEntities.tblEmployee" Width="1.5" PointX="7.5" PointY="57.25" />
+        <EntityTypeShape EntityType="ICONEntities.tblFile" Width="1.5" PointX="6" PointY="40.875" />
+        <EntityTypeShape EntityType="ICONEntities.tblIntermediateGroup" Width="1.5" PointX="8.25" PointY="48.375" />
+        <EntityTypeShape EntityType="ICONEntities.tblMainGroup" Width="1.5" PointX="8.25" PointY="42.625" />
+        <EntityTypeShape EntityType="ICONEntities.tblMenu" Width="1.5" PointX="8.25" PointY="38.875" />
+        <EntityTypeShape EntityType="ICONEntities.tblOffer" Width="1.5" PointX="18.75" PointY="62.125" />
+        <EntityTypeShape EntityType="ICONEntities.tblOfferDetail" Width="1.5" PointX="27" PointY="58.125" />
+        <EntityTypeShape EntityType="ICONEntities.tblOfferDetailLog" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="ICONEntities.tblOfferLog" Width="1.5" PointX="0.75" PointY="2" />
+        <EntityTypeShape EntityType="ICONEntities.tblOrder" Width="1.5" PointX="21.75" PointY="48.75" />
+        <EntityTypeShape EntityType="ICONEntities.tblOrderDetail" Width="1.5" PointX="27" PointY="52" />
+        <EntityTypeShape EntityType="ICONEntities.tblProduct" Width="1.5" PointX="15.75" PointY="49" />
+        <EntityTypeShape EntityType="ICONEntities.tblProductBrand" Width="1.5" PointX="10.5" PointY="46.5" />
+        <EntityTypeShape EntityType="ICONEntities.tblProductCategory" Width="1.5" PointX="21" PointY="63.625" />
+        <EntityTypeShape EntityType="ICONEntities.tblProductFile" Width="1.5" PointX="24" PointY="49.625" />
+        <EntityTypeShape EntityType="ICONEntities.tblProductHistory" Width="1.5" PointX="21" PointY="59" />
+        <EntityTypeShape EntityType="ICONEntities.tblProductSupplier" Width="1.5" PointX="18" PointY="58.625" />
+        <EntityTypeShape EntityType="ICONEntities.tblProductSupplierHistory" Width="1.5" PointX="21" PointY="54.375" />
+        <EntityTypeShape EntityType="ICONEntities.tblProductUnitType" Width="1.5" PointX="24" PointY="60.75" />
+        <EntityTypeShape EntityType="ICONEntities.tblPurchasOrder" Width="1.5" PointX="18.75" PointY="53.125" />
+        <EntityTypeShape EntityType="ICONEntities.tblPurchasOrderDetail" Width="1.5" PointX="24" PointY="53.25" />
+        <EntityTypeShape EntityType="ICONEntities.tblPurchasOrderDetailLog" Width="1.5" PointX="5.75" PointY="5.75" />
+        <EntityTypeShape EntityType="ICONEntities.tblPurchasOrderLog" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ICONEntities.tblRole" Width="1.5" PointX="5.25" PointY="50.5" />
+        <EntityTypeShape EntityType="ICONEntities.tblRoleMenu" Width="1.5" PointX="10.5" PointY="50.875" />
+        <EntityTypeShape EntityType="ICONEntities.tblRoleUser" Width="1.5" PointX="7.5" PointY="54.125" />
+        <EntityTypeShape EntityType="ICONEntities.tblStatu" Width="1.5" PointX="3" PointY="48" />
+        <EntityTypeShape EntityType="ICONEntities.tblStatusType" Width="1.5" PointX="0.75" PointY="49.875" />
+        <EntityTypeShape EntityType="ICONEntities.tblSubGroup" Width="1.5" PointX="13.5" PointY="48.375" />
+        <EntityTypeShape EntityType="ICONEntities.tblSupplier" Width="1.5" PointX="10.5" PointY="54.75" />
+        <EntityTypeShape EntityType="ICONEntities.tblUnit" Width="1.5" PointX="5.25" PointY="67.25" />
+        <EntityTypeShape EntityType="ICONEntities.vArticle" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="ICONEntities.vArticleCustomField" Width="1.5" PointX="2.75" PointY="7.75" />
+        <EntityTypeShape EntityType="ICONEntities.vArticleGroupMain" Width="1.5" PointX="7.75" PointY="5.75" />
+        <EntityTypeShape EntityType="ICONEntities.vArticleIntermediateGroup" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ICONEntities.vArticleStockInfo" Width="1.5" PointX="9.75" PointY="4.75" />
+        <EntityTypeShape EntityType="ICONEntities.vArticleSubGroup" Width="1.5" PointX="7.75" PointY="10.75" />
+        <EntityTypeShape EntityType="ICONEntities.vArticleUnitType" Width="1.5" PointX="9.75" PointY="10.75" />
+        <EntityTypeShape EntityType="ICONEntities.vCustomer" Width="1.5" PointX="11.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ICONEntities.vCustomerAddress" Width="1.5" PointX="4.75" PointY="12.75" />
+        <EntityTypeShape EntityType="ICONEntities.vCustomerCustomField" Width="1.5" PointX="13.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ICONEntities.vEmployee" Width="1.5" PointX="13.75" PointY="3.75" />
+        <EntityTypeShape EntityType="ICONEntities.vPO" Width="1.5" PointX="6.75" PointY="14.75" />
+        <EntityTypeShape EntityType="ICONEntities.vPOLine" Width="1.5" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ICONEntities.vSO" Width="1.5" PointX="15.75" PointY="12.75" />
+        <EntityTypeShape EntityType="ICONEntities.vSOLine" Width="1.5" PointX="17.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ICONEntities.vSupplier" Width="1.5" PointX="0.75" PointY="17.75" />
+        <EntityTypeShape EntityType="ICONEntities.vUnit" Width="1.5" PointX="2.75" PointY="17.75" />
+        <EntityTypeShape EntityType="ICONEntities.C__MigrationHistory" Width="1.5" PointX="17.75" PointY="11.75" />
+        <EntityTypeShape EntityType="ICONEntities.AspNetRole" Width="1.5" PointX="11.75" PointY="17.75" />
+        <EntityTypeShape EntityType="ICONEntities.AspNetUserClaim" Width="1.5" PointX="17.75" PointY="14.75" />
+        <EntityTypeShape EntityType="ICONEntities.AspNetUserLogin" Width="1.5" PointX="17.75" PointY="17.75" />
+        <EntityTypeShape EntityType="ICONEntities.AspNetUserRole" Width="1.5" PointX="8.75" PointY="18.75" />
+        <EntityTypeShape EntityType="ICONEntities.View_Customer" Width="1.5" PointX="19.75" PointY="0.75" />
+        <AssociationConnector Association="ICONEntities.FK_tblBrand_tblFile" />
+        <AssociationConnector Association="ICONEntities.FK_tblBrand_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductBrand_tblBrand" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductCategory_tblCategory" />
+        <AssociationConnector Association="ICONEntities.FK_tblCountry_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblCustomer_tblCountry" />
+        <AssociationConnector Association="ICONEntities.FK_tblCustomerShipping_tblCountry" />
+        <AssociationConnector Association="ICONEntities.FK_tblEmployees_tblCountry" />
+        <AssociationConnector Association="ICONEntities.FK_tblSupplier_tblCountry" />
+        <AssociationConnector Association="ICONEntities.FK_tblCustomer_tblCurrency" />
+        <AssociationConnector Association="ICONEntities.FK_tblProduct_tblCurrency" />
+        <AssociationConnector Association="ICONEntities.FK_tblSupplier_tblCurrency" />
+        <AssociationConnector Association="ICONEntities.FK_tblCustomer_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblCustomerShipping_tblCustomer" />
+        <AssociationConnector Association="ICONEntities.FK_tblOffer_tblCustomer" />
+        <AssociationConnector Association="ICONEntities.FK_tblOrder_tblCustomer" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductHistory_tblCustomer" />
+        <AssociationConnector Association="ICONEntities.FK_tblPurchasOrderDetail_tblCustomer" />
+        <AssociationConnector Association="ICONEntities.FK_tblCustomerShipping_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblEmployees_tblFile" />
+        <AssociationConnector Association="ICONEntities.FK_tblEmployees_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblIntermediateGroup_tblFile" />
+        <AssociationConnector Association="ICONEntities.FK_tblMainGroup_tblFile" />
+        <AssociationConnector Association="ICONEntities.FK_tblProduct_tblFile" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductFile_tblFile" />
+        <AssociationConnector Association="ICONEntities.FK_tblSubGroup_tblFile" />
+        <AssociationConnector Association="ICONEntities.FK_tblSupplier_tblFile" />
+        <AssociationConnector Association="ICONEntities.FK_tblIntermediateGroup_tblMainGroup" />
+        <AssociationConnector Association="ICONEntities.FK_tblIntermediateGroup_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblProduct_tblIntermediateGroup" />
+        <AssociationConnector Association="ICONEntities.FK_tblSubGroup_tblIntermediateGroup" />
+        <AssociationConnector Association="ICONEntities.FK_tblMainGroup_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblProduct_tblMainGroup" />
+        <AssociationConnector Association="ICONEntities.FK_tblRoleMenu_tblMenu" />
+        <AssociationConnector Association="ICONEntities.FK_tblOffer_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblOfferDetail_tblOffer" />
+        <AssociationConnector Association="ICONEntities.FK_tblOfferDetail_tblProduct" />
+        <AssociationConnector Association="ICONEntities.FK_tblOfferDetail_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblOfferDetailLog_tblOfferLog" />
+        <AssociationConnector Association="ICONEntities.FK_tblOrder_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblOrderDetail_tblOrder" />
+        <AssociationConnector Association="ICONEntities.FK_tblOrderDetail_tblProduct" />
+        <AssociationConnector Association="ICONEntities.FK_tblOrderDetail_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblProduct_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblProduct_tblSubGroup" />
+        <AssociationConnector Association="ICONEntities.FK_tblProduct_tblUnit" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductBrand_tblProduct" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductCategory_tblProduct" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductFile_tblProduct" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductHistory_tblProductHistory" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductSupplier_tblProduct" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductSupplierHistory_tblProductSupplierHistory" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductUnitType_tblProduct" />
+        <AssociationConnector Association="ICONEntities.FK_tblPurchasOrderDetail_tblProduct" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductSupplier_tblSupplier" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductSupplierHistory_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductSupplierHistory_tblSupplier" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductUnitType_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblProductUnitType_tblUnit" />
+        <AssociationConnector Association="ICONEntities.FK_tblPurchasOrder_tblPurchasOrder" />
+        <AssociationConnector Association="ICONEntities.FK_tblPurchasOrder_tblSupplier" />
+        <AssociationConnector Association="ICONEntities.FK_tblPurchasOrderDetail_tblPurchasOrder" />
+        <AssociationConnector Association="ICONEntities.FK_tblPurchasOrderDetail_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblRole_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblRoleMenu_tblRole" />
+        <AssociationConnector Association="ICONEntities.FK_tblRoleUser_tblRole" />
+        <AssociationConnector Association="ICONEntities.FK_tblStatus_tblStatusType" />
+        <AssociationConnector Association="ICONEntities.FK_tblSubGroup_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblSupplier_tblStatus" />
+        <AssociationConnector Association="ICONEntities.FK_tblUnit_tblStatus" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

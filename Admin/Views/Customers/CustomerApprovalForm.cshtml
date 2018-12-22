@@ -1,0 +1,130 @@
+﻿@model Admin.Models.Customer
+@using Admin.Helpers;
+@{
+    MenuItem mi = new MenuItem();
+    ViewData["Title"] = "Customer Approval";
+    ViewData["Active"] = "Customer Approval";
+    mi.Name = "Customer Approval";
+    mi.URL = "CustomerApprovalForm/" + Model.CustomerId.ToString() ;
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu> mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Customer_Approval).FirstOrDefault() != null)
+{
+
+    using (Html.BeginForm("CustomerApprovalFormAdd", "Customers", FormMethod.Post, new { @class = "form-horizontal form-seperated form-row-stripped" }))
+    {
+    @Html.AntiForgeryToken()
+    <div class="form-body">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                <b>
+                    @Html.DisplayFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                </b>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                <b>
+                    @Html.DisplayFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                </b>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrganizationName, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                <b>
+                    @Html.DisplayFor(model => model.OrganizationName, new { @class = "form-control" })
+                </b>
+            </div>
+        </div>
+        <div class="form-group">
+                @Html.LabelFor(model => model.OrganizationNumber, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                <b>
+                    @Html.DisplayFor(model => model.OrganizationNumber, new { htmlAttributes = new { @class = "form-control" } })
+                </b>
+                    </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address1, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                <b>
+                    @Html.DisplayFor(model => model.Address1, new { htmlAttributes = new { @class = "form-control" } })
+                </b>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address2, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                <b>
+                    @Html.DisplayFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control" } })
+                </b>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                <b>
+                    @Html.DisplayFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                </b>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PostOffice, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                <b>
+                    @Html.DisplayFor(model => model.PostOffice, new { htmlAttributes = new { @class = "form-control" } })
+                </b>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.country, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                <b>
+                    @Html.DisplayFor(model => model.myCountry, new { htmlAttributes = new { @class = "form-control" } })
+                </b>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                <div class="checkbox">
+                    @foreach (var item in Model.Role)
+                    {
+                        @Html.CheckBoxFor(modelItem => item.IsAllow)
+                        @:
+                        @item.Name
+                        @Html.HiddenFor(modelItem => item.RoleId)
+                        @:
+                        @:
+                        <br />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+   @Html.HiddenFor(model => model.userName)
+    <div class="form-actions text-right pal">
+        <input type="submit" value="Allow" name="action" class="btn btn-primary" />
+
+
+        @Html.ActionLink("Back to Approval List", "CustomerApproval", "Customers", null, new { @class = "btn btn-green" })
+
+    </div>
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

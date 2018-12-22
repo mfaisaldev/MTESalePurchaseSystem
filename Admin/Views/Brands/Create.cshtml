@@ -1,0 +1,112 @@
+﻿@model Admin.Models.Brand
+@using Admin.Helpers;
+@{
+    MenuItem mi = new MenuItem();
+    if (Model.BrandId == Guid.Empty)
+    {
+        ViewData["Title"] = "Brand - Create";
+        mi.Name = "Brands Create";
+    }
+    else
+    {
+        ViewData["Title"] = "Brand - Edit";
+        mi.Name = "Brands Edit";
+    }
+    ViewData["Active"] = "Brand";
+    mi.URL = "Create";
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu> mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Brand).FirstOrDefault() != null)
+{
+
+    using (Html.BeginForm("Create", "Brands", FormMethod.Post, new { @class = "form-horizontal form-seperated form-row-stripped", enctype = "multipart/form-data" }))
+    {
+    @Html.AntiForgeryToken()
+    <div class="form-body">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                <div class="text-danger">@ViewBag.Error</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DisplayOrder, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Image", new { @class = "control-label col-md-3" })
+            <div class="col-md-4">
+                @if (Model.BrandId != Guid.Empty)
+                {
+                    if (ViewBag.FileId != null)
+                    {
+                        <img src="~/File/Index/@ViewBag.FileId" height="100" width="100" alt="Image" />
+                    }
+                }
+                <input type="file" id="Avatar" name="upload" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                <div class="radio">
+                    @foreach (var item in Model.Status)
+                    {
+                        if (Model.BrandId == Guid.Empty && item.Value == Utilities.Status_InActive)
+                        {
+                            @Html.RadioButtonFor(m => m.myStatus, item.Value, new { @class = "form-control", @checked = "checked" });
+                        }
+                        else
+                        {
+                            @Html.RadioButtonFor(m => m.myStatus, item.Value, new { @class = "form-control" });
+                        }
+                        @:
+                        @item.Text;
+                        @:
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.BrandId)
+    @Html.HiddenFor(model => model.FileId)
+    <div class="form-actions text-right pal">
+        @if (Model.BrandId == Guid.Empty)
+        {
+            <input type="submit" value="Create Brand" name="action" class="btn btn-primary" />
+        }
+        else
+        {
+            <input type="submit" value="Edit Brand" name="action" class="btn btn-primary" />
+            @:
+            <input type="submit" value="Delete Brand" name="action" onclick="return confirm('Are you sure to delete this record ?')" class="btn btn-danger" />
+
+        }
+        @Html.ActionLink("Back to List", "Index", "Brands", null, new { @class = "btn btn-green" })
+
+    </div>
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

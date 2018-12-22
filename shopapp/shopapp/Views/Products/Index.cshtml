@@ -1,0 +1,76 @@
+﻿@model IEnumerable<shopapp.Models.ProductViewModel>
+ 
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="page">       
+     <!-- Begin Main -->
+        <div role="main" class="main">
+            <div class="container">
+                <div class="catalog">
+                    <div class="toolbar clearfix">
+                        <ul class="list-inline list-icons pull-left">
+                            <li class="active"><a href="shop-sidebar.html"><i class="fa fa-th"></i></a></li>
+                            <li><a href="shop-list-sidebar.html"><i class="fa fa-th-list"></i></a></li>
+                        </ul>
+                        <p class="pull-left">Showing 1-12 of 50 results</p>
+                        <!-- Ordering -->
+                        <div class="list-sort pull-right">
+                            <select class="formDropdown">
+                                <option>Default Sorting</option>
+                                <option>Sort by Popularity</option>
+                                <option>Sort by Newness</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+@foreach (var p in Model)
+{
+                        <div class="col-md-3 col-xs-6 col-sm-3 animation">
+                            
+                            <div class="product">
+                            
+                                    <div class="product-thumb-info">
+                                    <div class="product-thumb-info-image">
+                                        <span class="product-thumb-info-act">
+                                            @Html.ActionLink(" ", "Details", "Products", new { @id = p.Id }, new { @class = "fa fa-external-link" })
+                                            
+                                            @*<a href="javascript:void(0);" data-toggle="modal" data-target=".quickview-wrapper1" class="view-product">
+                                                <span><i class="fa fa-external-link"></i></span>
+                                            </a>*@
+                                            @*<a href="shop-cart-full.html" class="add-to-cart-product">
+                                                <span><i class="fa fa-shopping-cart"></i></span>
+                                            </a>*@
+                                        </span>
+                                        <img alt="" class="img-responsive" src="/home/RetriveImage/@p.ImgId">
+                                    </div>
+                                    <div class="product-thumb-info-content">
+                                        @*<span class="price pull-right">29.99 USD</span>*@
+                                        <h4>@Html.ActionLink(@p.Name, "details", "products", new { @id = p.Id }, null)</h4>
+                                        <span class="item-cat"><small><a href="#">@p.Category</a></small></span>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                            
+                        </div>
+}
+                    </div>                   
+                    <ul class="pagination">
+                        <li class="disabled"><a href="#">&laquo;</a></li>
+                        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End Main -->
+    </div>
+
+  

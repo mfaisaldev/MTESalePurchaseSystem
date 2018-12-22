@@ -1,0 +1,85 @@
+﻿@using Admin.Helpers;
+@model IEnumerable<Admin.Models.Customer>
+
+@{
+    ViewData["Title"] = "Customer Approval - List";
+    ViewData["Active"] = "Customer Approval";
+
+    MenuItem mi = new MenuItem();
+    mi.URL = "CustomerApproval";
+    mi.Name = "Customer Approval - List";
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuList.Clear();
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu> mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Customer_Approval).FirstOrDefault() != null)
+{
+    <div class="panel-body pan">
+        <div class="portlet box">
+            <div class="portlet-body">
+                <div class="row mbm">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table id="table_id"
+                                   class="table table-hover table-striped table-bordered table-advanced tablesorter display">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">@Html.DisplayNameFor(model => model.Name)</th>
+                                        <th width="20%">@Html.DisplayNameFor(model => model.OrganizationName)</th>
+                                        <th width="15%">@Html.DisplayNameFor(model => model.Phone)</th>
+                                        <th width="15%">@Html.DisplayNameFor(model => model.Email)</th>
+                                        <th width="10%">@Html.DisplayNameFor(model => model.City)</th>
+                                        <th width="10%">@Html.DisplayNameFor(model => model.Country)</th>
+                                        <th width="10%">Actions</th>
+                                    </tr>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.OrganizationName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Phone)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.City)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.myCountry)
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("CustomerApprovalForm", new { Id = item.CustomerId })">
+                                                    <button type="button" class="btn btn-default btn-xs">
+                                                        <i class="fa fa-edit"></i>&nbsp;
+                                                        Allow
+                                                    </button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @{Html.RenderPartial("_TableScripts");}
+}
+
+

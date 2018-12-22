@@ -1,0 +1,117 @@
+﻿<script src="~/Content/js/jquery-1.8.3.min.js"></script>
+<script src="~/Content/js/jquery.elevatezoom.js"></script>
+
+@using Admin.Helpers;
+@model Admin.Models.Product
+
+@{
+    ViewData["Title"] = "Product - Detail";
+    ViewData["Active"] = "Product";
+    MenuItem mi = new MenuItem();
+    mi.URL = "Index";
+    mi.Name = ViewData["Title"].ToString();
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuList.Clear();
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    var mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+    //Get Roles
+   // List<Admin.Models.Menu> mlist;
+    List<Admin.Models.RoleUser> UserRoles = ViewBag.UserRoles;
+
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Product).FirstOrDefault() != null && (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() != null))
+{
+    using (Html.BeginForm("CustomerOrder", "Orders", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-body">
+            <div class="form-body">
+                <div class="col-md-6">
+                    <div class="form-group"></div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <img id="zoom_01" src='~/File/Index/@Model.FileId' data-zoom-image="http://recentdigital-001-site2.htempurl.com/File/Index/@Model.FileId"  style="max-width:500px;" alt="Image" />
+                            @*data-zoom-image="http://recentdigital-001-site2.htempurl.com/File/Index/@Model.FileId"*@
+                        </div>
+                    </div>
+                    <div class="portlet box portlet-green">
+                        <div class="portlet-body">
+                            <div class="gallery-pages">
+                                <div class="clearfix"></div>
+                                <div class="row mix-grid">
+                                    <div class="form-group">
+                                        @foreach (var objFile in ViewBag.Files)
+                                        {
+                                            <div class="col-md-3 mix html development">
+                                                <div class="hover-effect">
+                                                    <div class="img">
+                                                        <img src="~/File/Index/@objFile.FileId.ToString()" alt=""
+                                                             class="img-responsive" />
+                                                    </div>
+                                                    <div class="info">
+                                                        <h3></h3><a href="~/File/Index/@objFile.FileId.ToString()"
+                                                               data-lightbox="image-2" data-title="Image 2" class="mix-zoom">
+                                                            <i class="glyphicon glyphicon-search"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.ProductId)
+               @Html.HiddenFor(model => model.ProductStock)
+               @Html.HiddenFor(model => model.UPC_code)
+                @Html.HiddenFor(model => model.Name)
+                @Html.HiddenFor(model => model.Price)
+                @Html.HiddenFor(model => model.Size)
+                @Html.HiddenFor(model => model.Colour)
+                    <div class="col-md-6">
+                    <div class="row row-merge">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="pricing-widget">
+                                <div class="pricing-head">@Html.DisplayFor(model => model.Name)</div>
+                                <div class="pricing-body">
+                                    <div class="pricing-cost">
+                                        <strong style="display: block">@Html.DisplayFor(model => model.Price)</strong>
+                                    </div>
+                                    <ul class="pricing-list text-center">
+                                        @if (Model.Size != null)
+                                        {
+                                        <li>Size <strong>@Html.DisplayFor(model => model.Size)</strong></li>
+                                        }
+                                        @if (Model.Colour != null)
+                                        {
+                                        <li>Color <strong>@Html.DisplayFor(model => model.Colour)</strong></li>
+                                        }
+                                        <li>@(new HtmlString(Model.FullDescription))</li>
+                                        <li>Qty : @Html.EditorFor(m=>m.OrderQty)</li>
+                                        <li class="text-center"><input type="submit" value="Order" name="action" class="btn btn-blue" /></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                      
+                    </div>
+                    </div>
+                <div class="form-actions text-right pal">
+                    @Html.ActionLink("Back to List", "Customer", "Products", null, new { @class = "btn btn-green" })
+                </div>
+            </div>
+        </div>
+    }
+}
+<script>
+    $("#zoom_01").elevateZoom();
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

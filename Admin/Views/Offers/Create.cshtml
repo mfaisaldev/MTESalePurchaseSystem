@@ -1,0 +1,369 @@
+﻿@model Admin.Models.OfferModel
+@using Admin.Helpers;
+@{
+    //Get Roles
+    List<Admin.Models.RoleUser>
+    UserRoles = ViewBag.UserRoles;
+
+    MenuItem mi = new MenuItem();
+    if (Model.Offer.OfferId == Guid.Empty)
+    {
+        ViewData["Title"] = "Offer - Create";
+        mi.Name = "Offer Create";
+    }
+    else
+    {
+        ViewData["Title"] = "Offer - Edit";
+        mi.Name = "Offer Edit";
+    }
+    ViewData["Active"] = "Offer";
+    mi.URL = "Create";
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu>
+        mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Offers).FirstOrDefault() != null)
+{
+    using (Html.BeginForm("Create", "Offers", FormMethod.Post, new { @class = "form-horizontal form-seperated form-row-stripped" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-body">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Offer.Name, htmlAttributes: new { @class = "col-md-3 control-label" })
+                <div class="col-md-4">
+                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() != null)
+                    {
+                        @Html.DisplayFor(model => model.Offer.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    else
+                    {
+                        @Html.EditorFor(model => model.Offer.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    @Html.ValidationMessageFor(model => model.Offer.Name, "", new { @class = "text-danger" })
+                    <div class="text-danger">@ViewBag.Error</div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Offer.Description, htmlAttributes: new { @class = "col-md-3 control-label" })
+                <div class="col-md-4">
+                    @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() != null)
+                    {
+                        @Html.DisplayFor(model => model.Offer.Description, new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.TextAreaFor(model => model.Offer.Description, new { @class = "form-control" })
+                    }
+                    @Html.ValidationMessageFor(model => model.Offer.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+            {
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Offer.Customer, htmlAttributes: new { @class = "col-md-3 control-label" })
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.Offer.CustomerId, new SelectList(Model.Offer.Customer, "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Offer.CustomerId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+        </div>
+        @Html.HiddenFor(model => model.Offer.OfferId)
+        <div class="panel-body pan">
+            <div class="portlet box">
+                <div class="portlet-body">
+                    <div class="row mbm">
+                        <div class="col-lg-12">
+                            <div style="width: auto; height: auto; max-height:500px; overflow: scroll;">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="vertical-align:bottom;">Product Name</th>
+                                                @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                            {
+                                            <th style="vertical-align:bottom;">History</th>
+                                            <th class="numeric" style="vertical-align:bottom;">Product Price</th>
+                                            <th class="numeric" style="vertical-align:bottom;">Product Stock</th>
+                                            }
+                                                <th class="numeric" style="vertical-align:bottom;">Offer Price</th>
+                                                <th class="numeric" style="vertical-align:bottom;">Offer Qty</th>
+                                                <th style="vertical-align:bottom;">Offer Remarks</th>
+                                                @if (Model.Offer.myStatus == Utilities.Status_Complete || Model.Offer.myStatus == Utilities.Status_Customer_Accepted
+|| Model.Offer.myStatus == Utilities.Status_Customer_Rejected || Model.Offer.myStatus == Utilities.Status_Finally_Approved
+|| Model.Offer.myStatus == Utilities.Status_Finally_in_Process || Model.Offer.myStatus == Utilities.Status_Finally_Rejected || Model.Offer.myStatus == Utilities.Status_Initially_Approved)
+                                            {
+                                            <th class="numeric" style="vertical-align:bottom;">Cutomer Price</th>
+                                            <th class="numeric" style="vertical-align:bottom;">Cutomer Qty</th>
+                                            <th style="vertical-align:bottom;">Cutomer Remarks</th>
+                                            }
+                                                @if (Model.Offer.myStatus == Utilities.Status_Complete || Model.Offer.myStatus == Utilities.Status_Finally_Approved || Model.Offer.myStatus == Utilities.Status_Customer_Accepted
+|| Model.Offer.myStatus == Utilities.Status_Finally_in_Process || Model.Offer.myStatus == Utilities.Status_Finally_Rejected)
+                                            {
+                                                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                                {
+                                            <th class="numeric" style="vertical-align:bottom;">Final Price</th>
+                                            <th class="numeric" style="vertical-align:bottom;">Final Qty</th>
+                                            <th style="vertical-align:bottom;">Final Remarks</th>
+                                                }
+                                                else
+                                                {
+                                                    if (Model.Offer.myStatus == Utilities.Status_Finally_Approved)
+                                                    {
+
+                                            <th class="numeric" style="vertical-align:bottom;">Final Price</th>
+                                            <th class="numeric" style="vertical-align:bottom;">Final Qty</th>
+                                            <th style="vertical-align:bottom;">Final Remarks</th>
+                                                    }
+                                                }
+
+
+                                            }
+                                                @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                            {
+                                            <th>Status</th>
+                                            }
+                                            </tr>
+                                        <tbody>
+                                            @foreach (var item in Model.OfferDetails)
+                                        {
+                                        <tr>
+                                            <td style="vertical-align:bottom;">
+                                                &nbsp;
+                                                @Html.DisplayFor(modelItem => item.myProduct)
+                                            </td>
+                                            @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                                {
+
+                                                <td style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @Html.DisplayFor(modelItem => item.History)
+                                                </td>
+                                                <td class="numeric" style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @Html.DisplayFor(modelItem => item.ProductPrice)
+                                                </td>
+                                                <td class="numeric" style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @Html.DisplayFor(modelItem => item.ProductStock)
+                                                </td>
+                                                }
+                                            <td class="numeric" style="vertical-align:bottom;">
+                                                &nbsp;
+                                                @if (Model.Offer.myStatus == Utilities.Status_Initialize || Model.Offer.myStatus == Utilities.Status_Initially_in_Process || Model.Offer.myStatus == Utilities.Status_Initially_Rejected)
+                                                    {
+                                                    @Html.EditorFor(modelItem => item.OfferPrice, new { htmlAttributes = new { style = "width:100px;" } })
+                                                    }
+                                                    else
+                                                    {
+                                                    @Html.DisplayFor(modelItem => item.OfferPrice)
+                                                    }
+                                            </td>
+                                            <td class="numeric" style="vertical-align:bottom;">
+                                                &nbsp;
+                                                @if (Model.Offer.myStatus == Utilities.Status_Initialize || Model.Offer.myStatus == Utilities.Status_Initially_in_Process || Model.Offer.myStatus == Utilities.Status_Initially_Rejected)
+                                                    {
+                                                    @Html.EditorFor(modelItem => item.OfferQty, new { htmlAttributes = new { style = "width:100px;" } })
+                                                    }
+                                                    else
+                                                    {
+                                                    @Html.DisplayFor(modelItem => item.OfferQty)
+                                                    }
+                                            </td>
+                                            <td style="vertical-align:bottom;">
+                                                &nbsp;
+                                                @if (Model.Offer.myStatus == Utilities.Status_Initialize || Model.Offer.myStatus == Utilities.Status_Initially_in_Process || Model.Offer.myStatus == Utilities.Status_Initially_Rejected)
+                                                    {
+                                                    @Html.EditorFor(modelItem => item.OfferRemarks, new { htmlAttributes = new { style = "width:100px;" } })
+                                                    }
+                                                    else
+                                                    {
+                                                    @Html.DisplayFor(modelItem => item.OfferRemarks)
+                                                    }
+                                            </td>
+                                            @if (Model.Offer.myStatus == Utilities.Status_Complete || Model.Offer.myStatus == Utilities.Status_Customer_Accepted
+|| Model.Offer.myStatus == Utilities.Status_Customer_Rejected || Model.Offer.myStatus == Utilities.Status_Finally_Approved
+|| Model.Offer.myStatus == Utilities.Status_Finally_in_Process || Model.Offer.myStatus == Utilities.Status_Finally_Rejected
+|| Model.Offer.myStatus == Utilities.Status_Initially_Approved)
+                                                {
+                                                <td class="numeric" style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @if (Model.Offer.myStatus == Utilities.Status_Initially_Approved)
+                                                        {
+                                                        @Html.EditorFor(modelItem => item.CustomerPrice, new { htmlAttributes = new { style = "width:100px;" } })
+                                                        }
+                                                        else
+                                                        {
+                                                        @Html.DisplayFor(modelItem => item.CustomerPrice)
+                                                        }
+                                                </td>
+                                                <td class="numeric" style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @if (Model.Offer.myStatus == Utilities.Status_Initially_Approved)
+                                                        {
+                                                        @Html.EditorFor(modelItem => item.CustomerQty, new { htmlAttributes = new { style = "width:100px;" } })
+                                                        }
+                                                        else
+                                                        {
+                                                        @Html.DisplayFor(modelItem => item.CustomerQty)
+                                                        }
+                                                </td>
+                                                <td style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @if (Model.Offer.myStatus == Utilities.Status_Initially_Approved)
+                                                        {
+                                                        @Html.EditorFor(modelItem => item.CustomerRemarks, new { htmlAttributes = new { style = "width:100px;" } })
+                                                        }
+                                                        else
+                                                        {
+                                                        @Html.DisplayFor(modelItem => item.CustomerRemarks)
+                                                        }
+                                                </td>
+                                                }
+                                            @if (Model.Offer.myStatus == Utilities.Status_Complete || Model.Offer.myStatus == Utilities.Status_Finally_Approved
+|| Model.Offer.myStatus == Utilities.Status_Finally_in_Process || Model.Offer.myStatus == Utilities.Status_Finally_Rejected || Model.Offer.myStatus == Utilities.Status_Customer_Accepted)
+                                                {
+                                                    if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                                    {
+                                                <td class="numeric" style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @if (Model.Offer.myStatus != Utilities.Status_Finally_Approved)
+                                                            {
+                                                            @Html.EditorFor(modelItem => item.FinalPrice, new { htmlAttributes = new { style = "width:100px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                            @Html.DisplayFor(modelItem => item.FinalPrice)
+                                                            }
+                                                </td>
+                                                <td class="numeric" style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @if (Model.Offer.myStatus != Utilities.Status_Finally_Approved)
+                                                            {
+                                                            @Html.EditorFor(modelItem => item.FinalQty, new { htmlAttributes = new { style = "width:100px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                            @Html.DisplayFor(modelItem => item.FinalQty)
+                                                            }
+                                                </td>
+                                                <td style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @if (Model.Offer.myStatus != Utilities.Status_Finally_Approved)
+                                                            {
+                                                            @Html.EditorFor(modelItem => item.FinalRemarks, new { htmlAttributes = new { style = "width:100px;" } })
+                                                            }
+                                                            else
+                                                            {
+                                                            @Html.DisplayFor(modelItem => item.FinalRemarks)
+                                                            }
+                                                </td>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        if (Model.Offer.myStatus == Utilities.Status_Finally_Approved)
+                                                        {
+
+                                                <td class="numeric" style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @Html.DisplayFor(modelItem => item.FinalPrice)
+                                                </td>
+                                                <td class="numeric" style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @Html.DisplayFor(modelItem => item.FinalQty)
+                                                </td>
+                                                <td style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    @Html.DisplayFor(modelItem => item.FinalRemarks)
+                                                </td>
+                                                            }
+                                                        }
+                                                }
+                                            @if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() == null)
+                                                {
+                                                <td style="vertical-align:bottom;">
+                                                    &nbsp;
+                                                    <span class="label label-sm label-success">@Html.DisplayFor(modelItem => item.myStatus)</span>
+                                                </td>
+                                                }
+                                            @Html.HiddenFor(modelItem => item.OfferDetailId)
+                                        </tr>
+                                        }
+                                        </tbody>
+                                        </thead>
+                                    </table>
+                                </div>
+                              </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.Offer.OfferId)
+        <div class="form-actions text-right pal">
+            @if (Model.Offer.OfferId == Guid.Empty)
+            {
+                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Sales_Representative).FirstOrDefault() != null)
+                {
+                    <input type="submit" value="Add Product" name="action" class="btn btn-blue" />
+                    <input type="submit" value="Create Offer" name="action" class="btn btn-primary" />
+                }
+            }
+            else
+            {
+                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Customer).FirstOrDefault() != null)
+                {
+                    if (Model.Offer.myStatus == Utilities.Status_Initially_Approved)
+                    {
+                        <input type="submit" value="Accepted" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Deny" name="action" class="btn btn-red" />
+                    }
+                }
+                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Sales_Manager).FirstOrDefault() != null)
+                {
+
+                    if (Model.Offer.myStatus == Utilities.Status_Finally_in_Process)
+                    {
+                        <input type="submit" value="Finally Approved" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Finally Rejected" name="action" class="btn btn-red" />
+                    }
+                    if (Model.Offer.myStatus == Utilities.Status_Initially_in_Process)
+                    {
+                        <input type="submit" value="Initailly Approved" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Initailly Rejected" name="action" class="btn btn-red" />
+                    }
+                }
+                if (UserRoles.Where(u => u.RoleId.ToString().ToUpper() == Utilities.Role_Sales_Representative).FirstOrDefault() != null)
+                {
+
+                    if (Model.Offer.myStatus == Utilities.Status_Initialize || Model.Offer.myStatus == Utilities.Status_Initially_Rejected || Model.Offer.myStatus == Utilities.Status_Customer_Rejected)
+                    {
+                        <input type="submit" value="Add Product" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Initailly Submit" name="action" class="btn btn-blue" />
+                        <input type="submit" value="Edit Offer" name="action" class="btn btn-primary" />
+                        <input type="submit" value="Delete Offer" name="action" onclick="return confirm('Are you sure to delete this record ?')" class="btn btn-danger" />
+
+                    }
+                    if (Model.Offer.myStatus == Utilities.Status_Customer_Accepted)
+                    {
+                        <input type="submit" value="Finally Submit" name="action" class="btn btn-blue" />
+                    }
+                }
+            }
+            @Html.ActionLink("Back to List", "Index", "Offers", null, new { @class = "btn btn-green" })
+        </div>
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

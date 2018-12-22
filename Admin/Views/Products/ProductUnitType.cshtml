@@ -1,0 +1,98 @@
+﻿@using Admin.Helpers;
+@model IEnumerable<Admin.Models.ProductUnitType>
+
+@{
+    ViewData["Title"] = ViewData["ProductName"] + " UnitType";
+    ViewData["Active"] = "Product";
+
+    MenuItem mi = new MenuItem();
+    mi.URL = "ProductUnitType";
+    mi.Name = ViewData["Title"].ToString();
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu> mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Product).FirstOrDefault() != null)
+{
+    <div class="panel-body pan">
+        <div class="portlet box">
+            <div class="portlet-header">
+                <a href="ProductUnitTypeAdd?ProductId=@Request.QueryString["ProductId"]">
+                    <button type="button" class="btn btn-info">
+                        Create New
+                    </button>
+                </a>
+                <a href="Create/@Request.QueryString["ProductId"]">
+                    <button type="button" class="btn btn-green">
+                        Back
+                    </button>
+                </a>
+            </div>
+            <div class="portlet-body">
+                <div class="row mbm">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table id="table_id"
+                                   class="table table-hover table-striped table-bordered table-advanced tablesorter display">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">@Html.DisplayNameFor(model => model.Name)</th>
+                                        <th width="20%">@Html.DisplayNameFor(model => model.UnitNamePurchase)</th>
+                                        <th width="20%">@Html.DisplayNameFor(model => model.ISOCode)</th>
+                                        <th width="10%">@Html.DisplayNameFor(model => model.Unit)</th>
+                                        <th width="10%">@Html.DisplayNameFor(model => model.Status)</th>
+                                        <th width="10%">Actions</th>
+                                    </tr>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.UnitNamePurchase)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ISOCode)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.myUnit)
+                                            </td>
+                                            <td>
+                                                @if (item.StatusId.ToString() == Utilities.Status_Active)
+                                                {
+                                                    <span class="label label-sm label-success">@Html.DisplayFor(modelItem => item.myStatus)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-sm label-danger">@Html.DisplayFor(modelItem => item.myStatus)</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("ProductUnitTypeAdd", new { Id = item.ProductUnitTypeId, ProductId = Request.QueryString[item.ProductId.ToString ()] })">
+                                                    <button type="button" class="btn btn-default btn-xs">
+                                                        <i class="fa fa-edit"></i>&nbsp;
+                                                        Edit
+                                                    </button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @{Html.RenderPartial("_TableScripts");}
+}
+
+

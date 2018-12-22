@@ -1,0 +1,68 @@
+﻿@using Admin.Helpers;
+@model Admin.Models.Country
+
+@{
+    if (Model.CountryId == Guid.Empty)
+    { ViewData["Title"] = "Country - Create";
+    }
+    else
+    { ViewData["Title"] = "Country - Edit";
+    }
+    ViewData["Active"] = "Country";
+    MenuItem mi = new MenuItem();
+    mi.URL = "Country";
+    mi.Name = ViewData["Title"].ToString();
+    mi.UserIdentity = User.Identity.Name;
+    HtmlHelpers.topMenuList.Clear();
+    HtmlHelpers.topMenuListAdd(mi);
+    Account a = new Account();
+    List<Admin.Models.Menu> mlist = a.AccessMenu(User.Identity.Name);
+    ViewData["mlist"] = mlist;
+}
+@if (mlist.Where(u => u.MenuId.ToString().ToUpper() == Utilities.Menu_Country).FirstOrDefault() != null)
+{
+    using (Html.BeginForm("Create", "Countries", FormMethod.Post, new { @class = "form-horizontal form-seperated form-row-stripped" }))
+    {
+    @Html.AntiForgeryToken()
+    <div class="form-body">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                <div class="text-danger">@ViewBag.Error</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DisplayOrder, htmlAttributes: new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.CountryId)
+    <div class="form-actions text-right pal">
+        @if (Model.CountryId == Guid.Empty)
+        {
+            <input type="submit" value="Create Country" name="action" class="btn btn-primary" />
+        }
+        else
+        {
+            <input type="submit" value="Edit Country" name="action" class="btn btn-primary" />
+            @:
+            <input type="submit" value="Delete Country" name="action" onclick="return confirm('Are you sure to delete this record ?')" class="btn btn-danger" />
+
+        }
+        @Html.ActionLink("Back to List", "Index", "Countries", null, new { @class = "btn btn-green" })
+
+    </div>
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
